@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Menú</h2>
+
+<div class="row">
+{% for d in dishes %}
+    <div class="col-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{ d.name }}</h5>
+                <p>${{ d.price }}</p>
+                <a href="/orders/add/{{ d.id }}/" class="btn btn-success">Agregar</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}

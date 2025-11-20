@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Carrito</h2>
+
+{% if order %}
+<table class="table">
+    {% for item in order.items.all %}
+    <tr>
+        <td>{{ item.dish.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>${{ item.dish.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/orders/pay/" class="btn btn-primary">Pagar</a>
+
+{% else %}
+<p>No tienes ningún pedido pendiente.</p>
+{% endif %}
+{% endblock %}
