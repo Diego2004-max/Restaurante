@@ -1,11 +1,12 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth.models import User
 
 class Reservation(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
-    people = models.PositiveIntegerField(default=1)
+    persons = models.PositiveIntegerField(default=1)
+    notes = models.TextField(blank=True)
 
     def __str__(self):
-        return f"Reserva de {self.user.username} el {self.date}"
+        return f"Reserva {self.user.username} - {self.date} {self.time}"
