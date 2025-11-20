@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
+
 from .forms import RegisterForm
 from .models import Profile
 
@@ -11,23 +11,21 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            
             user = form.save()
 
             
             role = form.cleaned_data["role"]
 
+           
             profile, created = Profile.objects.get_or_create(
                 user=user,
                 defaults={"role": role},
             )
 
             if not created:
-                
                 profile.role = role
                 profile.save()
 
-            
             login(request, user)
             return redirect("core:dashboard")
     else:
