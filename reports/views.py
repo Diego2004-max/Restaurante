@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
+from django.db import models
 from orders.models import OrderItem
+
 
 def top_dishes_pdf(request):
     response = HttpResponse(content_type="application/pdf")
@@ -13,8 +15,8 @@ def top_dishes_pdf(request):
     ranking = (
         OrderItem.objects
         .values("dish__name")
-        .order_by("-quantity")
-        .annotate(total=models.Sum("quantity"))[:5]
+        .annotate(total=models.Sum("quantity"))
+        .order_by("-total")[:5]
     )
 
     for item in ranking:

@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from .models import Reservation
 from django.contrib.auth.decorators import login_required
+from .models import Reservation
+
 
 @login_required
 def reservation_list(request):
     reservations = Reservation.objects.filter(user=request.user)
     return render(request, "reservations/list.html", {"reservations": reservations})
+
 
 @login_required
 def reservation_create(request):
@@ -18,4 +20,5 @@ def reservation_create(request):
             notes=request.POST["notes"]
         )
         return redirect("reservations:list")
+
     return render(request, "reservations/form.html")

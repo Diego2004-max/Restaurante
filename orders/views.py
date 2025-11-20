@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from menu.models import Dish
 from .models import Order, OrderItem, Payment
-from django.contrib.auth.decorators import login_required
+
 
 @login_required
 def menu_view(request):
@@ -11,11 +12,18 @@ def menu_view(request):
 
 @login_required
 def add_to_cart(request, dish_id):
-    dish = Dish.objects.get(id=dish_id)
-    order, created = Order.objects.get_or_create(user=request.user, status="PENDING")
-    item, _ = OrderItem.objects.get_or_create(order=order, dish=dish)
+    dish = get_object_or_404(Dish, id=dish_id)
+
+    order, created = Order.objects.get_or_create(
+        user=request.user, 
+        status="PENDING"
+    )
+
+    item, created = OrderItem.objects.get_or_create(order=order, dish=dish)
+
     item.quantity += 1
     item.save()
+
     return redirect("orders:cart")
 
 
@@ -27,14 +35,17 @@ def cart(request):
 
 @login_required
 def pay_order(request):
-    order = Order.objects.get(user=request.user, status="PENDING")
+    order = get_object_or_404(Order, user=request.user, status="PENDING")
+
     Payment.objects.create(
         order=order,
         method="CASH",
         amount=order.total()
     )
+
     order.status = "PAID"
     order.save()
+
     return redirect("orders:history")
 
 
