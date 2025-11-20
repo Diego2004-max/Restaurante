@@ -7,33 +7,21 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="/">🍽 Restaurante</a>
+        <a class="navbar-brand" href="/">Restaurante</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="nav">
-            <ul class="navbar-nav ms-auto">
-
-                <li class="nav-item"><a class="nav-link" href="/menu/dishes/">Menú</a></li>
-                <li class="nav-item"><a class="nav-link" href="/orders/menu/">Pedir</a></li>
-                <li class="nav-item"><a class="nav-link" href="/reservations/">Reservas</a></li>
-                <li class="nav-item"><a class="nav-link" href="/inventory/">Inventario</a></li>
-                <li class="nav-item"><a class="nav-link" href="/reports/top-dishes/">Reportes</a></li>
-
-                {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="/core/dashboard/">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="/logout/">Salir</a></li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="/login/">Ingresar</a></li>
-                {% endif %}
-            </ul>
+        <div>
+            {% if user.is_authenticated %}
+                <a class="btn btn-outline-danger btn-sm" href="{% url 'core:logout' %}">Salir</a>
+            {% else %}
+                <a class="btn btn-outline-primary btn-sm" href="{% url 'core:login' %}">Ingresar</a>
+                <a class="btn btn-primary btn-sm ms-2" href="{% url 'core:register' %}">Registrarme</a>
+            {% endif %}
         </div>
     </div>
 </nav>
+
 
 <div class="container mt-4">
 

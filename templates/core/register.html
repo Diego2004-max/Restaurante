@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Crear cuenta</h2>
+
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            Revisa los datos ingresados.
+        </div>
+    {% endif %}
+
+    <form method="POST" class="card p-4 shadow">
+        {% csrf_token %}
+
+        <label>Nombre de usuario</label>
+        {{ form.username }} <br>
+
+        <label>Correo</label>
+        {{ form.email }} <br>
+
+        <label>Contraseña</label>
+        {{ form.password1 }} <br>
+
+        <label>Confirmar contraseña</label>
+        {{ form.password2 }} <br>
+
+        <label>Rol</label>
+        {{ form.role }} <br>
+
+        <button class="btn btn-primary mt-3">Registrarme</button>
+    </form>
+</div>
+{% endblock %}
