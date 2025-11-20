@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Registrar Movimiento</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <select name="ingredient" class="form-control mb-2">
+        {% for ing in ingredients %}
+        <option value="{{ ing.id }}">{{ ing.name }}</option>
+        {% endfor %}
+    </select>
+
+    <input name="quantity" class="form-control mb-2" placeholder="Cantidad" type="number">
+
+    <select name="movement_type" class="form-control mb-2">
+        <option value="IN">Entrada</option>
+        <option value="OUT">Salida</option>
+    </select>
+
+    <button class="btn btn-success">Guardar</button>
+</form>
+{% endblock %}

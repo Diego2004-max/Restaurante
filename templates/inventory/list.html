@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Inventario</h2>
+
+<a href="/inventory/movement/create/" class="btn btn-primary">Registrar Movimiento</a>
+
+<table class="table mt-3">
+    <tr>
+        <th>Ingrediente</th>
+        <th>Cantidad</th>
+        <th>Unidad</th>
+    </tr>
+
+    {% for i in items %}
+    <tr>
+        <td>{{ i.ingredient.name }}</td>
+        <td>{{ i.quantity }}</td>
+        <td>{{ i.ingredient.unit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
