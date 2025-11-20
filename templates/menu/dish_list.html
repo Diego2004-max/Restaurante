@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Platos</h2>
+
+<a href="/menu/dishes/create/" class="btn btn-primary mb-3">Nuevo Plato</a>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+    </tr>
+    {% for d in dishes %}
+    <tr>
+        <td>{{ d.name }}</td>
+        <td>${{ d.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

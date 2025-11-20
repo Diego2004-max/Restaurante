@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Ingredientes</h2>
+<a href="/menu/ingredients/create/" class="btn btn-primary">Nuevo Ingrediente</a>
+
+<table class="table table-striped mt-3">
+    {% for ing in ingredients %}
+    <tr>
+        <td>{{ ing.name }}</td>
+        <td>{{ ing.quantity }} {{ ing.unit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
