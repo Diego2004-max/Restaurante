@@ -1,9 +1,12 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-secret-123'
+SECRET_KEY = 'django-insecure-r3st@ur4nt3-pr0j3ct-2025'
+
 DEBUG = True
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -16,8 +19,8 @@ INSTALLED_APPS = [
     'core',
     'menu',
     'orders',
-    'reservations',
     'inventory',
+    'reservations',
     'reports',
 ]
 
@@ -28,6 +31,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'restaurante.urls'
@@ -57,20 +61,26 @@ DATABASES = {
     }
 }
 
-AUTH_PASSWORD_VALIDATORS = []
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
 
-LANGUAGE_CODE = 'es-es'
+LANGUAGE_CODE = 'es'
+
 TIME_ZONE = 'America/Bogota'
+
 USE_I18N = True
+
 USE_TZ = True
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = "core.User"
-LOGIN_URL = "/login/"
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/login/"
-
