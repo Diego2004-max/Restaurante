@@ -6,30 +6,64 @@
     <h2 class="text-center mb-4">Crear cuenta</h2>
 
     {% if form.errors %}
-        <div class="alert alert-danger">
-            Revisa los datos ingresados.
-        </div>
+    <div class="alert alert-danger">
+        <strong>Revisa los datos ingresados.</strong>
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endif %}
 
     <form method="POST" class="card p-4 shadow">
         {% csrf_token %}
 
-        <label>Nombre de usuario</label>
-        {{ form.username }} <br>
+    
+        <div class="mb-3">
+            <label class="form-label">Nombre de usuario</label>
+            {{ form.username }}
+        </div>
 
-        <label>Correo</label>
-        {{ form.email }} <br>
+        
+        <div class="mb-3">
+            <label class="form-label">Correo</label>
+            {{ form.email }}
+        </div>
 
-        <label>Contraseña</label>
-        {{ form.password1 }} <br>
+        
+        <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input type="password" name="password1" class="form-control" required>
+        </div>
 
-        <label>Confirmar contraseña</label>
-        {{ form.password2 }} <br>
+        <div class="mb-3">
+            <label class="form-label">Confirmar contraseña</label>
+            <input type="password" name="password2" class="form-control" required>
+        </div>
 
-        <label>Rol</label>
-        {{ form.role }} <br>
+        <div class="mb-3">
+            <label class="form-label">Rol</label>
+            {{ form.role }}
+        </div>
 
-        <button class="btn btn-primary mt-3">Registrarme</button>
+        <button class="btn btn-primary w-100 mt-3">Registrarme</button>
     </form>
+
+    <div class="alert alert-secondary mt-4">
+        <strong>Requisitos para crear la cuenta:</strong>
+        <ul class="mt-2">
+            <li>El nombre de usuario debe ser único.</li>
+            <li>Correo válido y no registrado previamente.</li>
+            <li>Contraseña mínima de 8 caracteres.</li>
+            <li>Ambas contraseñas deben coincidir.</li>
+            <li>Roles permitidos: Administrador, Mesero, Cliente.</li>
+        </ul>
+    </div>
 </div>
 {% endblock %}

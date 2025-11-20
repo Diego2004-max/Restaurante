@@ -1,6 +1,33 @@
-{% extends "core/base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h1 class="text-center mt-4">Bienvenido al Sistema del Restaurante</h1>
-<p class="text-center">Inicia sesión o regístrate para continuar.</p>
+
+<div class="text-center py-5">
+
+    <h1 class="fw-bold mb-3">Bienvenido al Sistema del Restaurante</h1>
+    <p class="text-muted fs-5">Gestiona pedidos, inventario, menú, reservas y más.</p>
+
+    <img src="https://cdn-icons-png.flaticon.com/512/3595/3595455.png"
+         width="150" class="my-4 opacity-75">
+
+    {% if not user.is_authenticated %}
+        <div class="mt-4">
+            <a href="{% url 'core:login' %}" class="btn btn-dark btn-lg px-4 mx-2">
+                Iniciar Sesión
+            </a>
+
+            <a href="{% url 'core:register' %}" class="btn btn-primary btn-lg px-4 mx-2">
+                Registrarse
+            </a>
+        </div>
+    {% else %}
+        <div class="mt-4">
+            <a href="{% url 'core:dashboard' %}" class="btn btn-success btn-lg px-4">
+                Ir al Dashboard
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+
 {% endblock %}
