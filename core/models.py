@@ -1,15 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class Profile(models.Model):
-    ROLES = [
-        ("ADMIN", "Administrador"),
-        ("WAITER", "Mesero"),
-        ("CLIENT", "Cliente"),
+    ROLE_CHOICES = [
+        ("admin", "Administrador"),
+        ("mesero", "Mesero"),
+        ("cliente", "Cliente"),
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=ROLES, default="CLIENT")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="cliente")
 
     def __str__(self):
-        return f"{self.user.username} ({self.role})"
+        return f"Perfil de {self.user.username}"
+
+#CREACIÓN AUTOMÁTICA DE PERFIL
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

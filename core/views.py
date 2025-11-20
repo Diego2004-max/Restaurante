@@ -24,5 +24,5 @@ def logout_view(request):
 
 @login_required
 def dashboard(request):
-    profile = Profile.objects.get(user=request.user)
+    profile = request.user.profile
     return render(request, "core/dashboard.html", {"profile": profile})
