@@ -1,20 +1,33 @@
+# core/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 from .forms import RegisterForm
 from .models import Profile
+
 
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
+            
             user = form.save()
 
-            # El perfil YA existe gracias al signal
-            profile = user.profile
-            profile.role = form.cleaned_data["role"]
-            profile.save()
+            
+            role = form.cleaned_data["role"]
 
+            profile, created = Profile.objects.get_or_create(
+                user=user,
+                defaults={"role": role},
+            )
+
+            if not created:
+                
+                profile.role = role
+                profile.save()
+
+            
             login(request, user)
             return redirect("core:dashboard")
     else:
@@ -32,8 +45,7 @@ def login_view(request):
         if user:
             login(request, user)
             return redirect("core:dashboard")
-        else:
-            return render(request, "core/login.html", {"error": "Credenciales incorrectas"})
+        return render(request, "core/login.html", {"error": "Credenciales incorrectas"})
 
     return render(request, "core/login.html")
 
@@ -49,5 +61,20 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    profile = Profile.objects.get(user=request.user)
-    return render(request, "core/dashboard.html", {"profile": profile})
+    
+    profile, created = Profile.objects.get_or_create(
+        user=request.user,
+        defaults={"role": "cliente"},
+    )
+
+    role = profile.role
+    context = {"profile": profile}
+
+    if role == "admin":
+        context["admin_view"] = True
+    elif role == "mesero":
+        context["mesero_view"] = True
+    else:
+        context["cliente_view"] = True
+
+    return render(request, "core/dashboard.html", context)

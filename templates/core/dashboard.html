@@ -1,18 +1,44 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
+
 {% block content %}
-<h2>Dashboard</h2>
 
-<p><strong>Usuario:</strong> {{ user.username }}</p>
-<p><strong>Rol:</strong> {{ profile.role }}</p>
+<div class="container mt-4">
 
-<hr>
+    <h2 class="mb-3 text-center">Bienvenido, {{ profile.user.username }}!</h2>
+    <h5 class="text-center">Tu rol: <strong>{{ profile.role|title }}</strong></h5>
 
-<h4>Acciones rápidas</h4>
+    <hr>
 
-<a href="/menu/dishes/" class="btn btn-primary m-1">Gestionar Menú</a>
-<a href="/inventory/" class="btn btn-warning m-1">Inventario</a>
-<a href="/orders/menu/" class="btn btn-success m-1">Realizar Pedido</a>
-<a href="/reservations/" class="btn btn-info m-1">Reservas</a>
-<a href="/reports/top-dishes/" class="btn btn-dark m-1">Reportes PDF</a>
+    
+    {% if admin_view %}
+    <h3>Panel de Administrador</h3>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/menu/dishes/" class="btn btn-primary">Gestionar Platos</a>
+        <a href="/inventory/" class="btn btn-warning">Inventario</a>
+        <a href="/reports/top-dishes/" class="btn btn-dark">Reportes PDF</a>
+        <a href="/orders/history/" class="btn btn-success">Historial de Ventas</a>
+    </div>
+    {% endif %}
+
+    
+    {% if mesero_view %}
+    <h3>Panel del Mesero</h3>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/orders/menu/" class="btn btn-success">Tomar Pedido</a>
+        <a href="/orders/history/" class="btn btn-secondary">Pedidos Atendidos</a>
+    </div>
+    {% endif %}
+
+    
+    {% if cliente_view %}
+    <h3>Panel del Cliente</h3>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="/orders/menu/" class="btn btn-info">Ver Menú</a>
+        <a href="/orders/cart/" class="btn btn-primary">Mi Carrito</a>
+        <a href="/reservations/" class="btn btn-warning">Mis Reservas</a>
+    </div>
+    {% endif %}
+
+</div>
 
 {% endblock %}
