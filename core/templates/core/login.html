@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Iniciar sesión</h2>
+
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <input name="username" placeholder="Usuario"><br>
+    <input type="password" name="password" placeholder="Contraseña"><br>
+    <button type="submit">Entrar</button>
+</form>
+
+<a href="/register/">Crear cuenta</a>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Bienvenido al Sistema del Restaurante</h1>
+
+{% if user.is_authenticated %}
+    <p>Hola, {{ user.username }}</p>
+    <a href="/dashboard/">Dashboard</a> |
+    <a href="/logout/">Salir</a>
+{% else %}
+    <a href="/login/">Iniciar Sesión</a> |
+    <a href="/register/">Crear Cuenta</a>
+{% endif %}
+
+</body>
+</html>
