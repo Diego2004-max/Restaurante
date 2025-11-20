@@ -14,12 +14,12 @@ def movement_create(request):
     items = InventoryItem.objects.all()
 
     if request.method == "POST":
-        item = get_object_or_404(InventoryItem, id=request.POST["item"])
+        item = get_object_or_404(InventoryItem, id=request.POST.get("item"))
 
         StockMovement.objects.create(
             item=item,
-            quantity=float(request.POST["quantity"]),
-            movement_type=request.POST["movement_type"],
+            quantity=float(request.POST.get("quantity")),
+            movement_type=request.POST.get("movement_type"),
             user=request.user
         )
 

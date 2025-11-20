@@ -14,10 +14,10 @@ def reservation_create(request):
     if request.method == "POST":
         Reservation.objects.create(
             user=request.user,
-            date=request.POST["date"],
-            time=request.POST["time"],
-            persons=request.POST["persons"],
-            notes=request.POST["notes"]
+            date=request.POST.get("date"),
+            time=request.POST.get("time"),
+            persons=request.POST.get("persons"),
+            notes=request.POST.get("notes")
         )
         return redirect("reservations:list")
 

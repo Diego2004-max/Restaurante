@@ -11,16 +11,12 @@ def register(request):
         if form.is_valid():
             user = form.save()
 
-            # Crear perfil si no existe
             profile, created = Profile.objects.get_or_create(user=user)
-
-            # Guardar rol
-            role = form.cleaned_data["role"]
-            profile.role = role
+            profile.role = form.cleaned_data["role"]
             profile.save()
 
             login(request, user)
-            return redirect("dashboard")
+            return redirect("core:dashboard")
     else:
         form = RegisterForm()
 
@@ -29,13 +25,14 @@ def register(request):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
         user = authenticate(request, username=username, password=password)
 
-        if user:
+        if user is not None:
             login(request, user)
-            return redirect("dashboard")
+            return redirect("core:dashboard")
         else:
             return render(request, "core/login.html", {"error": "Credenciales incorrectas"})
 
@@ -44,7 +41,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("login")
+    return redirect("core:login")
 
 
 def home(request):
@@ -53,5 +50,5 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    profile = Profile.objects.get(user=request.user)
+    profile = Profile.objects.filter(user=request.user).first()
     return render(request, "core/dashboard.html", {"profile": profile})

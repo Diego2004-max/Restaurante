@@ -28,7 +28,7 @@ def ingredient_create(request):
         Ingredient.objects.create(
             name=request.POST.get("name"),
             unit=request.POST.get("unit"),
-            quantity=request.POST.get("quantity")
+            quantity=request.POST.get("quantity"),
         )
         return redirect("menu:ingredient_list")
     return render(request, "menu/ingredient_form.html")

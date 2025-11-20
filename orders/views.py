@@ -15,11 +15,14 @@ def add_to_cart(request, dish_id):
     dish = get_object_or_404(Dish, id=dish_id)
 
     order, created = Order.objects.get_or_create(
-        user=request.user, 
+        user=request.user,
         status="PENDING"
     )
 
-    item, created = OrderItem.objects.get_or_create(order=order, dish=dish)
+    item, created = OrderItem.objects.get_or_create(
+        order=order,
+        dish=dish
+    )
 
     item.quantity += 1
     item.save()
