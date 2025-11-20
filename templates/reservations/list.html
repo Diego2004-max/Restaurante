@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Mis Reservas</h2>
+
+<a class="btn btn-primary" href="/reservations/create/">Nueva Reserva</a>
+
+<ul class="list-group mt-3">
+    {% for r in reservations %}
+    <li class="list-group-item">
+        {{ r.date }} - {{ r.time }} | {{ r.persons }} personas
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

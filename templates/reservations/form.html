@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Nueva Reserva</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="date" name="date" class="form-control mb-2">
+    <input type="time" name="time" class="form-control mb-2">
+    <input type="number" name="persons" class="form-control mb-2" placeholder="Personas">
+    <textarea name="notes" class="form-control mb-2" placeholder="Notas"></textarea>
+    
+    <button class="btn btn-success">Guardar</button>
+</form>
+{% endblock %}
