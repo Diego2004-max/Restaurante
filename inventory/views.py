@@ -1,15 +1,20 @@
+# inventory/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import InventoryItem, StockMovement
 from django.contrib.auth.decorators import login_required
+
+from .models import InventoryItem, StockMovement
+from core.decorators import role_required
 
 
 @login_required
+@role_required(["admin"])
 def inventory_list(request):
     items = InventoryItem.objects.all()
     return render(request, "inventory/list.html", {"items": items})
 
 
 @login_required
+@role_required(["admin"])
 def movement_create(request):
     items = InventoryItem.objects.all()
 
@@ -20,7 +25,7 @@ def movement_create(request):
             item=item,
             quantity=float(request.POST.get("quantity")),
             movement_type=request.POST.get("movement_type"),
-            user=request.user
+            user=request.user,
         )
 
         return redirect("inventory:list")
