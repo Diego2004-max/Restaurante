@@ -1,13 +1,31 @@
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from .models import Dish, Ingredient
 
-def menu_list(request):
-    return HttpResponse("LISTA DE MENÚ")
+def dish_list(request):
+    dishes = Dish.objects.all()
+    return render(request, "menu/dish_list.html", {"dishes": dishes})
 
-def menu_create(request):
-    return HttpResponse("CREAR PLATO")
+def dish_create(request):
+    if request.method == "POST":
+        Dish.objects.create(
+            name=request.POST["name"],
+            description=request.POST["description"],
+            price=request.POST["price"],
+        )
+        return redirect("menu:dish_list")
+    return render(request, "menu/dish_form.html")
 
-def menu_edit(request, pk):
-    return HttpResponse(f"EDITAR PLATO {pk}")
 
-def menu_delete(request, pk):
-    return HttpResponse(f"ELIMINAR PLATO {pk}")
+def ingredient_list(request):
+    ingredients = Ingredient.objects.all()
+    return render(request, "menu/ingredient_list.html", {"ingredients": ingredients})
+
+def ingredient_create(request):
+    if request.method == "POST":
+        Ingredient.objects.create(
+            name=request.POST["name"],
+            unit=request.POST["unit"],
+            quantity=request.POST["quantity"]
+        )
+        return redirect("menu:ingredient_list")
+    return render(request, "menu/ingredient_form.html")

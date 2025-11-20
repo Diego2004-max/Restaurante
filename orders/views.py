@@ -1,0 +1,44 @@
+from django.shortcuts import render, redirect
+from menu.models import Dish
+from .models import Order, OrderItem, Payment
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def menu_view(request):
+    dishes = Dish.objects.all()
+    return render(request, "orders/menu.html", {"dishes": dishes})
+
+
+@login_required
+def add_to_cart(request, dish_id):
+    dish = Dish.objects.get(id=dish_id)
+    order, created = Order.objects.get_or_create(user=request.user, status="PENDING")
+    item, _ = OrderItem.objects.get_or_create(order=order, dish=dish)
+    item.quantity += 1
+    item.save()
+    return redirect("orders:cart")
+
+
+@login_required
+def cart(request):
+    order = Order.objects.filter(user=request.user, status="PENDING").first()
+    return render(request, "orders/cart.html", {"order": order})
+
+
+@login_required
+def pay_order(request):
+    order = Order.objects.get(user=request.user, status="PENDING")
+    Payment.objects.create(
+        order=order,
+        method="CASH",
+        amount=order.total()
+    )
+    order.status = "PAID"
+    order.save()
+    return redirect("orders:history")
+
+
+@login_required
+def history(request):
+    orders = Order.objects.filter(user=request.user).exclude(status="PENDING")
+    return render(request, "orders/history.html", {"orders": orders})
