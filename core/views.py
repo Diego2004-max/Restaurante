@@ -4,14 +4,14 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from .models import Profile
 
-
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
 
-            profile, created = Profile.objects.get_or_create(user=user)
+            # El perfil YA existe gracias al signal
+            profile = user.profile
             profile.role = form.cleaned_data["role"]
             profile.save()
 
@@ -29,8 +29,7 @@ def login_view(request):
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
-
-        if user is not None:
+        if user:
             login(request, user)
             return redirect("core:dashboard")
         else:
@@ -50,5 +49,5 @@ def home(request):
 
 @login_required
 def dashboard(request):
-    profile = Profile.objects.filter(user=request.user).first()
+    profile = Profile.objects.get(user=request.user)
     return render(request, "core/dashboard.html", {"profile": profile})
